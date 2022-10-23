@@ -1,8 +1,8 @@
-import { FC, useReducer } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { FC, useEffect, useReducer } from 'react';
 
 import { EntriesContext, entriesReducer } from './';
 import { Entry } from '../../interfaces';
+import { entriesApi } from '../../apis';
 
 export interface EntriesState {
   entries: Entry[];
@@ -13,40 +13,33 @@ interface EntriesProviderProps {
 }
 
 const Entries_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description: 'Pending: Prospd dasdasdas asrewropkvn asawsewqijc ewoieq mdcawqeqwo asd',
-      status: 'pending',
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description: 'In Progress: Juasd Yuitl impusum providersu trulolile adsad',
-      status: 'in-progress',
-      createdAt: Date.now() - 1000000,
-    },
-    {
-      _id: uuidv4(),
-      description: 'Finished: Asaraum jalcatone uisloitum prodsd qeeutilpsum',
-      status: 'finished',
-      createdAt: Date.now() - 100000,
-    },
-  ],
+  entries: [],
 };
 
 export const EntriesProvider: FC<EntriesProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(entriesReducer, Entries_INITIAL_STATE);
 
-  const addNewEntry = (description: string) => {
-    const newEntry: Entry = {
-      _id: uuidv4(),
-      description,
-      createdAt: Date.now(),
-      status: 'pending'
-    };
+  useEffect(() => {
+    refreshEntries();
+  }, []);
 
-    dispatch({ type: '[Entries] - Add-Entry', payload: newEntry });
+  const refreshEntries = async () => {
+    try {
+      const { data } = await entriesApi.get<Entry[]>('/entries');
+
+      dispatch({ type: '[Entries] - Refresh-data', payload: data });
+    } catch (error) {
+      console.log(error, 'An error ocurred while getting the entries');
+    }
+  };
+
+  const addNewEntry = async (description: string) => {
+    try {
+      const { data } = await entriesApi.post<Entry>('/entries', { description });
+      dispatch({ type: '[Entries] - Add-Entry', payload: data });
+    } catch (error) {
+      console.log(error, 'An error ocurred while adding a new entriy');
+    }
   };
 
   const updateEntry = (entry: Entry) => {
