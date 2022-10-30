@@ -1,23 +1,23 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
 import { ChangeEvent, useState } from "react";
-import { Category } from "../../../interfaces";
+import { Entry } from "../../../interfaces";
 
-import styles from './NewEntryDialog.module.css';
+import styles from './EditEntryDialog.module.css';
 
 interface Props {
   isOpen: boolean;
-  board: Category | null;
+  ticket: Entry | null;
   handleClose: () => void;
-  handleConfirm: (value: string, boardId: string) => void;
+  handleConfirm: (ticket: Entry) => void;
 }
 
-export const NewEntryDialog = ({
+export const EditEntryDialog = ({
   isOpen,
-  board,
+  ticket,
   handleClose,
   handleConfirm,
 }: Props) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState<string>(ticket?.description!);
   const [isTouched, setIsTouched] = useState(false);
 
   const onTextChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,12 @@ export const NewEntryDialog = ({
   const onSave = () => {
     if (!inputValue.length) return;
 
-    handleConfirm(inputValue, board?._id!);
+    const updatedTicket = {
+      ...ticket,
+      description: inputValue
+    } as Entry;
+
+    handleConfirm(updatedTicket);
     resetForm();
   };
 
@@ -38,11 +43,9 @@ export const NewEntryDialog = ({
 
   return (
     <Dialog open={isOpen} onClose={handleClose}>
-      <DialogTitle>New ticket</DialogTitle>
+      <DialogTitle>Edit ticket</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          Add new Ticket to the board: <strong style={{ color: '#41ff00' }}>{board?.name}</strong>
-        </DialogContentText>
+
         <TextField
           className={styles['new-entry-dialog__textfield']}
           fullWidth

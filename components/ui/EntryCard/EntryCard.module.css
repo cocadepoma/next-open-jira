@@ -1,15 +1,31 @@
 .entrycard__container {
   background-color: rgb(179, 183, 196);
   border-radius: 5px;
+  box-shadow: 1px 1px 6px -1px #000000b0;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
   margin-bottom: 0.5rem;
   position: relative;
+}
+
+.entrycard__actions--container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.entrycard__buttons--container {
+  display: flex;
+  justify-content: space-between;
+  width: 2.5rem;
+  position: absolute;
+  top: 0;
+  right: 0.5rem;
 }
 
 .entrycard__text {
   white-space: pre-line;
   font-weight: bold;
   user-select: none;
+  margin-right: 1rem;
 }
 
 .entrycard__time {
@@ -18,18 +34,21 @@
   font-size: 0.7rem;
   user-select: none;
 }
-.entrycard__button {
-  position: absolute;
-  right: 0;
-  top: 0;
-  cursor: pointer;
-  color: #600a0a;
+
+.entrycard__button--edit {
+  color: #0f2c6a;
+  width: 1rem;
+}
+
+.entrycard__button--delete {
+  color: #370404;
+  width: 1rem;
 }
 
 @media (min-width: 768px) {
   .entrycard__container {
-    min-width: 20.5rem;
-    max-width: 20.5rem;
-    width: 20.5rem;
+    min-width: 22rem;
+    max-width: 22rem;
+    width: 22rem;
   }
 }

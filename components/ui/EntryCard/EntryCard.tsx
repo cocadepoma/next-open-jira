@@ -1,34 +1,30 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditIcon from '@mui/icons-material/Edit';
+
 import { IconButton } from "@mui/material";
 
-import { Category, Entry } from "../../../interfaces"
+import { Entry } from "../../../interfaces"
 
 import styles from './EntryCard.module.css'
-import { BoardsContext } from "../../../context/boards/BoardsContext";
 
 interface Props {
   entry: Entry;
   index: number;
+  setActiveDeleteTicket: (entry: Entry) => void;
+  setActiveEditTicket: (entry: Entry) => void;
 }
 
-export const EntryCard: FC<Props> = ({ entry, index }) => {
-  const { boards, deleteEntry, updateBoards } = useContext(BoardsContext);
-
+export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setActiveEditTicket }) => {
   const onDelete = () => {
-    const entryBoard = boards.find(board => board._id === entry.categoryId)!;
-    const updatedTickets = entryBoard.tickets.filter(ticket => ticket._id !== entry._id);
+    setActiveDeleteTicket(entry)
+  };
 
-    const updatedBoard: Category = {
-      ...entryBoard,
-      tickets: updatedTickets
-    };
-
-    deleteEntry(entry);
-    updateBoards([updatedBoard]);
-  }
+  const onEdit = () => {
+    setActiveEditTicket(entry)
+  };
 
   return (
     <Draggable draggableId={entry._id} index={index} key={entry._id}>
@@ -40,14 +36,27 @@ export const EntryCard: FC<Props> = ({ entry, index }) => {
             {...draggableProvided.dragHandleProps}
             ref={draggableProvided.innerRef}
           >
-            <p className={styles.entrycard__text}>{entry.description}</p>
+            <div className={styles['entrycard__actions--container']}>
+              <p className={styles.entrycard__text}>{entry.description}</p>
 
-            <IconButton
-              className={styles.entrycard__button}
-              onClick={onDelete}
-            >
-              <DeleteOutlineIcon fontSize="small" />
-            </IconButton>
+              <div className={styles['entrycard__buttons--container']}>
+                <IconButton
+                  className={styles['entrycard__button--edit']}
+                  onClick={onEdit}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+
+                <IconButton
+                  className={styles['entrycard__button--delete']}
+                  onClick={onDelete}
+                >
+                  <DeleteOutlineIcon fontSize="small" />
+                </IconButton>
+
+              </div>
+
+            </div>
 
             <p className={styles.entrycard__time}>30 mins ago</p>
           </div>

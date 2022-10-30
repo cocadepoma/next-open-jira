@@ -13,7 +13,7 @@ interface Props {
 export const CardHeader = ({ className = '', board, onClick }: Props) => {
   return (
     <div className={className}>
-      <h3>{board.name}</h3>
+      <h4>{board.name}</h4>
 
       <IconButton onClick={() => onClick(board)}>
         <AddCircleOutlineOutlined />

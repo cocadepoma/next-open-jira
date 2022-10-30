@@ -2,21 +2,22 @@ import { useContext, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
-import { IconButton, } from '@mui/material'
-import { AddCircleOutlineOutlined } from '@mui/icons-material'
 
 import { Layout } from '../components/layouts'
-import { CardHeader, EntryList, NewEntryDialog } from '../components/ui'
+import { CardHeader, DeleteEntryDialog, EditEntryDialog, EntryList, NewEntryDialog } from '../components/ui'
 
 import { BoardsContext } from '../context/boards'
 
-import { Category } from '../interfaces'
+import { Category, Entry } from '../interfaces'
 
-import styles from './Home.module.css'
+import styles from '../styles/Home.module.css'
 
 const HomePage: NextPage = () => {
-  const { boards, updateEntry, updateBoards } = useContext(BoardsContext);
+  const { boards, updateEntry, updateBoards, deleteEntry } = useContext(BoardsContext);
   const [activeBoard, setActiveBoard] = useState<Category | null>(null);
+  const [activeDeleteTicket, setActiveDeleteTicket] = useState<Entry | null>(null);
+  const [activeEditTicket, setActiveEditTicket] = useState<Entry | null>(null);
+
   const { addNewEntry } = useContext(BoardsContext);
 
   const onDragEndHandler = (result: DropResult) => {
@@ -52,17 +53,63 @@ const HomePage: NextPage = () => {
     }
   };
 
-  const openDialogNewEntry = (board: Category) => {
+  const onStartAddNewEntry = (board: Category) => {
     setActiveBoard(board);
   };
 
-  const cancelAddingEntryToBoard = () => {
+  const onCloseAddNewTicker = () => {
     setActiveBoard(null);
   };
 
-  const startAddingNewEntry = (value: string, boardId: string) => {
+  const onStartDeleteTicket = (entry: Entry) => {
+    setActiveDeleteTicket(entry);
+  };
+
+  const onCloseDeleteTicket = () => {
+    setActiveDeleteTicket(null);
+  };
+
+  const onStartEditTicket = (entry: Entry) => {
+    setActiveEditTicket(entry);
+  };
+
+  const onCloseEditTicket = () => {
+    setActiveEditTicket(null);
+  };
+
+  const handleConfirmEditTicket = (newTicket: Entry) => {
+    const entryBoard = boards.find(board => board._id === newTicket.categoryId)!;
+    const updatedTickets = entryBoard.tickets.map(ticket => ticket._id === newTicket._id ? newTicket : ticket);
+
+    const updatedBoard: Category = {
+      ...entryBoard,
+      tickets: updatedTickets
+    };
+
+    updateEntry(newTicket);
+    updateBoards([updatedBoard]);
+
+    onCloseEditTicket();
+  };
+
+  const handleConfirmAddNewTicket = (value: string, boardId: string) => {
     addNewEntry(value, boardId);
-    setActiveBoard(null);
+    onCloseAddNewTicker();
+  };
+
+  const handleConfirmDeleteTicket = (entry: Entry) => {
+    const entryBoard = boards.find(board => board._id === entry.categoryId)!;
+    const updatedTickets = entryBoard.tickets.filter(ticket => ticket._id !== entry._id);
+
+    const updatedBoard: Category = {
+      ...entryBoard,
+      tickets: updatedTickets
+    };
+
+    deleteEntry(entry);
+    updateBoards([updatedBoard]);
+
+    onCloseDeleteTicket();
   };
 
   return (
@@ -75,7 +122,7 @@ const HomePage: NextPage = () => {
               <CardHeader
                 className={styles['home__header--container']}
                 board={board}
-                onClick={openDialogNewEntry}
+                onClick={onStartAddNewEntry}
               />
 
               <Droppable droppableId={board._id}>
@@ -85,7 +132,11 @@ const HomePage: NextPage = () => {
                       ref={droppableProvided.innerRef}
                       {...droppableProvided.droppableProps}
                     >
-                      <EntryList tickets={board.tickets} />
+                      <EntryList
+                        tickets={board.tickets}
+                        setActiveDeleteTicket={onStartDeleteTicket}
+                        setActiveEditTicket={onStartEditTicket}
+                      />
                       {droppableProvided.placeholder}
                     </div>
                   )}
@@ -99,11 +150,32 @@ const HomePage: NextPage = () => {
         activeBoard && (
           <NewEntryDialog
             isOpen={!!activeBoard}
-            handleClose={cancelAddingEntryToBoard}
-            handleConfirm={startAddingNewEntry}
+            handleClose={onCloseAddNewTicker}
+            handleConfirm={handleConfirmAddNewTicket}
             board={activeBoard}
           />
+        )
+      }
 
+      {
+        activeDeleteTicket && (
+          <DeleteEntryDialog
+            isOpen={!!activeDeleteTicket}
+            handleClose={onCloseDeleteTicket}
+            handleDelete={handleConfirmDeleteTicket}
+            ticket={activeDeleteTicket}
+          />
+        )
+      }
+
+      {
+        activeEditTicket && (
+          <EditEntryDialog
+            isOpen={!!activeEditTicket}
+            handleClose={onCloseEditTicket}
+            handleConfirm={handleConfirmEditTicket}
+            ticket={activeEditTicket}
+          />
         )
       }
     </Layout>
