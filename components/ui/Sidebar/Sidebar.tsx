@@ -3,7 +3,9 @@ import { Box, ClickAwayListener, Divider, Drawer, List, ListItem, ListItemIcon, 
 import { useContext } from "react";
 import { UIContext } from "../../../context/ui";
 
-const menuItems: string[] = ['Inbox', 'Starred', 'Send Email', 'Drafts'];
+const menuItems: string[] = ['Add new Column', 'Reorder Columns', 'Profile', 'Drafts'];
+
+// const menuItems: string[] = ['Inbox', 'Starred', 'Send Email', 'Drafts'];
 
 export const Sidebar = () => {
   const { sideMenuOpen, closeSideMenu } = useContext(UIContext);

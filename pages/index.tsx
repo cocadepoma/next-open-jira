@@ -11,6 +11,7 @@ import { BoardsContext } from '../context/boards'
 import { Category, Entry } from '../interfaces'
 
 import styles from '../styles/Home.module.css'
+import { Container, List } from '@mui/material'
 
 const HomePage: NextPage = () => {
   const { boards, updateEntry, updateBoards, deleteEntry } = useContext(BoardsContext);

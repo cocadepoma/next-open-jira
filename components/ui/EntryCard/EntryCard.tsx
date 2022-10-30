@@ -30,7 +30,7 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
     const currentDate = new Date().getTime();
     const ticketDate = new Date(time).getTime();
 
-    let diff = ((currentDate - ticketDate) / 1000) / 60;
+    const diff = ((currentDate - ticketDate) / 1000) / 60;
 
     if (diff > 518400) {
       return `${Math.round(diff / 43200)} year/s ago`;
