@@ -1,0 +1,35 @@
+.entrycard__container {
+  background-color: rgb(179, 183, 196);
+  border-radius: 5px;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.entrycard__text {
+  white-space: pre-line;
+  font-weight: bold;
+  user-select: none;
+}
+
+.entrycard__time {
+  margin-top: 1.25rem;
+  text-align: right;
+  font-size: 0.7rem;
+  user-select: none;
+}
+.entrycard__button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  color: #600a0a;
+}
+
+@media (min-width: 768px) {
+  .entrycard__container {
+    min-width: 20.5rem;
+    max-width: 20.5rem;
+    width: 20.5rem;
+  }
+}

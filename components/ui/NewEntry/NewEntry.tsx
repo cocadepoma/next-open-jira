@@ -1,12 +1,12 @@
 import { ChangeEvent, useContext, useState } from "react"
 import { AddCircleOutlineOutlined, SaveOutlined } from "@mui/icons-material"
 import { Box, Button, TextField } from "@mui/material"
-import { EntriesContext } from "../../context/entries";
-import { UIContext } from "../../context/ui";
+import { BoardsContext } from "../../../context/boards";
+import { UIContext } from "../../../context/ui";
 
 
 export const NewEntry = () => {
-  const { addNewEntry } = useContext(EntriesContext);
+  // const { addNewEntry } = useContext(BoardsContext);
   const { isAddingEntry, setIsAddingEntry } = useContext(UIContext);
 
   const [isAdding, setIsAdding] = useState(false);
@@ -20,7 +20,7 @@ export const NewEntry = () => {
   const onSave = () => {
     if (!inputValue.length) return;
 
-    addNewEntry(inputValue);
+    // addNewEntry(inputValue);
     resetForm();
   };
 
@@ -29,6 +29,7 @@ export const NewEntry = () => {
     setIsAddingEntry(false);
     setInputValue('');
   };
+
   return (
     <Box sx={{ marginBottom: 2, paddingX: 2 }}>
 

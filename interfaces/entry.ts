@@ -2,7 +2,16 @@ export interface Entry {
   _id: string;
   description: string;
   createdAt: number;
-  status: EntryStatus;
+  categoryId: string;
 }
 
-export type EntryStatus = 'pending' | 'in-progress' | 'finished';
+export interface EntryResponse {
+  entry: Entry;
+}
+
+export interface Entries {
+  _id: string;
+  name: string;
+  tickets: Entry[];
+}
+// export type EntryStatus = 'pending' | 'in-progress' | 'finished';

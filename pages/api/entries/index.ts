@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../../database';
-import { EntryModel, IEntry } from '../../../models';
+import { CategoryModel, EntryModel, IEntry } from '../../../models';
 
 type Data =
   | { message: string }
-  | IEntry[]
-  | IEntry;
+  | { entry: IEntry }
+  | IEntry[];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
@@ -22,7 +22,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 
 const getEntries = async (res: NextApiResponse<Data>) => {
   await db.connect();
-  const entries = await EntryModel.find().sort({ createdAt: 'ascending' });
+  const entries = await EntryModel.find().sort({ indexOrder: 'ascending' });
 
   await db.disconnect();
 
@@ -30,17 +30,25 @@ const getEntries = async (res: NextApiResponse<Data>) => {
 };
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { description = '' } = req.body;
-  const newEntry = new EntryModel({
-    description,
-    createdAt: Date.now(),
-  });
+  const { description = '', categoryId } = req.body;
 
   try {
     await db.connect();
+
+    const category = await CategoryModel.findById(categoryId);
+    if (!category) return res.status(500).json({ message: 'Category does not exist' });
+
+    const newEntry = new EntryModel({
+      description,
+      createdAt: Date.now(),
+      categoryId: category._id
+    });
+
     await newEntry.save();
 
-    return res.status(201).json(newEntry);
+    await CategoryModel.findByIdAndUpdate(categoryId, { name: category.name, tickets: [...category.tickets, newEntry] }, { runValidators: true, new: true });
+
+    return res.status(201).json({ entry: newEntry });
   } catch (error) {
     console.log(error);
 

@@ -1,1 +1,1 @@
-export { default as entriesApi } from "./entriesApi";
+export { default as boardsApi } from "./boardsApi";

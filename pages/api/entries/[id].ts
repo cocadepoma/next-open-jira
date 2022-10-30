@@ -14,13 +14,16 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   if (!mongoose.isValidObjectId(id)) {
     return res.status(400).json({ message: `The id ${id} is not a valid id` })
   }
-
+  console.log({ req: req.method })
   switch (req.method) {
     case 'PUT':
       return updateEntry(req, res);
 
     case 'GET':
       return getEntry(req, res);
+
+    case 'DELETE':
+      return deleteEntry(req, res);
 
     default:
       return res.status(400).json({ message: 'Method not allowed' });
@@ -41,11 +44,11 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
   const {
     description = entryToUpdate.description,
-    status = entryToUpdate.status
+    categoryId = entryToUpdate.categoryId,
   } = req.body;
 
   try {
-    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, status }, { runValidators: true, new: true });
+    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, categoryId }, { runValidators: true, new: true });
 
     // entryToUpdate.description = description;
     // entryToUpdate.status = status;
@@ -58,6 +61,7 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
   }
 };
+
 const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
@@ -72,4 +76,20 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   res.status(200).json(requestedEntry);
+};
+
+const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
+  const { id } = req.query;
+
+  await db.connect();
+
+  const deletedEntry = await EntryModel.findByIdAndRemove(id);
+
+  await db.disconnect();
+
+  if (!deletedEntry) {
+    return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
+  }
+
+  res.status(200).json(deletedEntry);
 };

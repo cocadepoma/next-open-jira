@@ -4,18 +4,18 @@ import { darkTheme, lightTheme } from '../themes'
 
 import '../styles/globals.css'
 import { UIProvider } from '../context/ui'
-import { EntriesProvider } from '../context/entries'
+import { BoardsProvider } from '../context/boards'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UIProvider>
-      <EntriesProvider>
+      <BoardsProvider>
         <ThemeProvider theme={darkTheme}>
           <CssBaseline>
             <Component {...pageProps} />
           </CssBaseline >
         </ThemeProvider >
-      </EntriesProvider>
+      </BoardsProvider>
     </UIProvider>
   )
 }

@@ -2,6 +2,8 @@ import { Box } from "@mui/material"
 import Head from "next/head"
 import { Navbar, Sidebar } from "../ui";
 
+import styles from './Layout.module.css';
+
 interface Props {
   title?: string;
   children?: React.ReactNode
@@ -9,7 +11,7 @@ interface Props {
 
 export const Layout: React.FC<Props> = ({ title = 'OpenJira', children }: Props) => {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <div className={styles.layout__container}>
       <Head>
         <title>{title}</title>
       </Head>
@@ -17,9 +19,9 @@ export const Layout: React.FC<Props> = ({ title = 'OpenJira', children }: Props)
       <Navbar />
       <Sidebar />
 
-      <Box sx={{ padding: '10px 20px' }}>
+      <div className={styles['layout__content--container']}>
         {children}
-      </Box>
-    </Box>
+      </div>
+    </div>
   )
 }
