@@ -26,6 +26,25 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
     setActiveEditTicket(entry)
   };
 
+  const getTime = (time: number) => {
+    const currentDate = new Date().getTime();
+    const ticketDate = new Date(time).getTime();
+
+    let diff = ((currentDate - ticketDate) / 1000) / 60;
+
+    if (diff > 518400) {
+      return `${Math.round(diff / 43200)} year/s ago`;
+    } else if (diff > 43200) {
+      return `${Math.round(diff / 43200)} month/s ago`;
+    } else if (diff > 1440) {
+      return `${Math.round(diff / 1440)} day/s ago`;
+    } else if (diff > 60) {
+      return `${Math.round(diff / 60)} hour/s ago`;
+    } else {
+      return `${Math.abs(Math.round(diff))} minutes ago`;
+    }
+  }
+
   return (
     <Draggable draggableId={entry._id} index={index} key={entry._id}>
       {
@@ -58,7 +77,7 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
 
             </div>
 
-            <p className={styles.entrycard__time}>30 mins ago</p>
+            <p className={styles.entrycard__time}>{getTime(entry.createdAt)}</p>
           </div>
         )
       }
