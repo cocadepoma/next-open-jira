@@ -16,6 +16,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     case 'GET':
       return getCategory(req, res);
 
+    case 'DELETE':
+      return deleteCategory(req, res);
+
     default:
       return res.status(400).json({ message: 'This method is not allowed' });
   }
@@ -58,4 +61,20 @@ const getCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   }
 
   res.status(200).json(requestedCategory);
+};
+
+const deleteCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+  const { id } = req.query;
+
+  await db.connect();
+
+  const deletedCategory = await CategoryModel.findByIdAndRemove(id);
+
+  await db.disconnect();
+
+  if (!deletedCategory) {
+    return res.status(400).json({ message: `There is not a category with the id: ${id}` });
+  };
+
+  return res.status(200).json(deletedCategory);
 };

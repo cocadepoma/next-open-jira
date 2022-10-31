@@ -1,14 +1,33 @@
-import { InboxOutlined, MailOutline } from "@mui/icons-material";
-import { Box, ClickAwayListener, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material"
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { DashboardOutlined, DashboardCustomizeOutlined } from "@mui/icons-material";
+import {
+  Box,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography
+} from "@mui/material"
 import { UIContext } from "../../../context/ui";
-
-const menuItems: string[] = ['Add new Column', 'Reorder Columns', 'Profile', 'Drafts'];
-
-// const menuItems: string[] = ['Inbox', 'Starred', 'Send Email', 'Drafts'];
+import { useRouter } from "next/router";
 
 export const Sidebar = () => {
+  const router = useRouter();
+
   const { sideMenuOpen, closeSideMenu } = useContext(UIContext);
+  const [activeUrl, setActiveUrl] = useState('base');
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    if (window.location.href.includes('boards')) {
+      setActiveUrl('boards');
+    } else {
+      setActiveUrl('base');
+    }
+  }, []);
 
   return (
     <Drawer
@@ -20,37 +39,32 @@ export const Sidebar = () => {
         <Box sx={{ padding: '5px 10px' }}>
           <Typography variant="h4">Menu</Typography>
         </Box>
-        <List>
-          {
-            menuItems.map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 ? <InboxOutlined /> : <MailOutline />}
-                </ListItemIcon>
-                <ListItemText primary={text}>
 
-                </ListItemText>
-              </ListItem>
-            ))
-          }
+        <List>
+          <ListItem style={{ backgroundColor: activeUrl === 'base' ? 'rgba(255,255,255,0.3)' : undefined }} button onClick={() => {
+            closeSideMenu();
+            router.push('/');
+          }}>
+            <ListItemIcon>
+              <DashboardOutlined />
+            </ListItemIcon>
+            <ListItemText primary={'Board'} />
+          </ListItem>
+
+          <ListItem style={{ backgroundColor: activeUrl === 'boards' ? 'rgba(255,255,255,0.3)' : undefined }} button onClick={() => {
+            closeSideMenu();
+            router.push('/boards');
+          }}>
+            <ListItemIcon>
+              <DashboardCustomizeOutlined />
+            </ListItemIcon>
+            <ListItemText primary={'Edit Board'} />
+          </ListItem>
+
         </List>
 
         <Divider />
 
-        <List>
-          {
-            menuItems.map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 ? <InboxOutlined /> : <MailOutline />}
-                </ListItemIcon>
-                <ListItemText primary={text}>
-
-                </ListItemText>
-              </ListItem>
-            ))
-          }
-        </List>
       </Box>
     </Drawer>
   )

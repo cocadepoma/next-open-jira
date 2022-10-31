@@ -1,6 +1,8 @@
+import React from 'react'
+
 import { AddCircleOutlineOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import React from 'react'
+
 import { Category } from '../../../interfaces';
 
 interface Props {

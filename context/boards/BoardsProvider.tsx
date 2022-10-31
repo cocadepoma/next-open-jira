@@ -52,8 +52,17 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     }
   };
 
-  const updateBoards = async (boards: Category[]) => {
+  const addNewBoard = async (name: string) => {
+    try {
+      const { data } = await boardsApi.post<Category>('/category', { name });
 
+      dispatch({ type: '[Boards] - Add Board', payload: data });
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
+  const updateBoards = async (boards: Category[]) => {
     try {
       dispatch({ type: '[Boards] - Update Boards', payload: boards });
 
@@ -64,7 +73,16 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     } catch (error) {
       console.log({ error });
     }
+  };
 
+  const deleteBoard = async (board: Category) => {
+    try {
+      dispatch({ type: '[Boards] - Remove Board', payload: board });
+
+      await boardsApi.delete(`/category/${board._id}`);
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   const deleteEntry = async ({ _id }: Entry) => {
@@ -82,6 +100,8 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
         addNewEntry,
         updateEntry,
         deleteEntry,
+        deleteBoard,
+        addNewBoard,
         updateBoards,
       }}
     >

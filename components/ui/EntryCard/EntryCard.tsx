@@ -3,6 +3,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
+import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
 
 import { IconButton } from "@mui/material";
 
@@ -77,7 +78,11 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
 
             </div>
 
-            <p className={styles.entrycard__time}>{getTime(entry.createdAt)}</p>
+
+            <p className={styles.entrycard__time}>
+              <HourglassTopOutlinedIcon />
+              {getTime(entry.createdAt)}
+            </p>
           </div>
         )
       }

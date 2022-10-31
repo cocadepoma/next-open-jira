@@ -6,7 +6,8 @@ type BoardsActionType =
   | { type: '[Boards] - Entry-Updated', payload: Entry }
   | { type: '[Boards] - Load data', payload: Category[] }
   | { type: '[Boards] - Update Boards', payload: Category[] }
-
+  | { type: '[Boards] - Add Board', payload: Category }
+  | { type: '[Boards] - Remove Board', payload: Category }
 
 export const boardsReducer = (state: BoardsState, action: BoardsActionType): BoardsState => {
   switch (action.type) {
@@ -25,10 +26,13 @@ export const boardsReducer = (state: BoardsState, action: BoardsActionType): Boa
         } else {
           return action.payload.find(newBoard => newBoard._id === stateBoard._id)!
         }
-      })
+      });
+
+      const sortedBoards = updatedBoards.sort((a, b) => a.indexOrder - b.indexOrder);
+
+      console.log(boardsIds);
       return {
-        ...state,
-        boards: [...updatedBoards]
+        boards: sortedBoards
       }
 
     case '[Boards] - Add-Entry':
@@ -43,6 +47,26 @@ export const boardsReducer = (state: BoardsState, action: BoardsActionType): Boa
       return {
         ...state,
         boards: state.boards.map(board => board._id === newBoard._id ? newBoard : board),
+      };
+
+    case '[Boards] - Add Board':
+      return {
+        ...state,
+        boards: [...state.boards, action.payload],
+      };
+
+    case '[Boards] - Remove Board':
+      const filteredBoards = state.boards.filter(stateBoard => stateBoard._id !== action.payload._id);
+      const refreshedSortedIndexBoards = filteredBoards
+        .map((board, i) => ({
+          ...board,
+          indexOrder: i
+        }))
+        .sort((a, b) => a.indexOrder - b.indexOrder);
+
+      return {
+        ...state,
+        boards: refreshedSortedIndexBoards
       };
 
     // case '[Boards] - Entry-Updated':

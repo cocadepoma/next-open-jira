@@ -53,7 +53,7 @@ const postCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
 const getCategories = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   try {
     await db.connect();
-    const currentCategories = await CategoryModel.find();
+    const currentCategories = await CategoryModel.find().sort({ indexOrder: 1 });
 
     return res.status(200).json(currentCategories);
   } catch (error) {

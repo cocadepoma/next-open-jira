@@ -33,6 +33,15 @@
   text-align: right;
   font-size: 0.7rem;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.entrycard__time svg {
+  font-size: 0.9rem;
+  color: rgba(22, 22, 22, 0.701);
+  margin-right: 0.3rem;
 }
 
 .entrycard__button--edit {
