@@ -41,8 +41,10 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
       return `${Math.round(diff / 1440)} day/s ago`;
     } else if (diff > 60) {
       return `${Math.round(diff / 60)} hour/s ago`;
-    } else {
+    } else if (Math.abs(Math.round(diff)) >= 1) {
       return `${Math.abs(Math.round(diff))} minutes ago`;
+    } else {
+      return 'just now';
     }
   }
 
