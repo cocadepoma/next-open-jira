@@ -1,5 +1,5 @@
 .entrycard__container {
-  background-color: rgb(179, 183, 196);
+  background-color: rgb(255, 255, 255);
   border-radius: 5px;
   box-shadow: 1px 1px 6px -1px #000000b0;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
@@ -25,7 +25,8 @@
   white-space: pre-line;
   font-weight: bold;
   user-select: none;
-  margin-right: 1rem;
+  margin-right: 2rem;
+  color: rgba(0, 0, 0, 0.7)
 }
 
 .entrycard__time {
@@ -45,12 +46,12 @@
 }
 
 .entrycard__button--edit {
-  color: #0f2c6a;
+  color: #072f84;
   width: 1rem;
 }
 
 .entrycard__button--delete {
-  color: #370404;
+  color: #910101;
   width: 1rem;
 }
 
