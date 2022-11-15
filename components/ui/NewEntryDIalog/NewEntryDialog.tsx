@@ -1,12 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
 import { ChangeEvent, useState } from "react";
-import { Category } from "../../../interfaces";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
+// import { Category } from "../../../interfaces";
 
 import styles from './NewEntryDialog.module.css';
 
 interface Props {
   isOpen: boolean;
-  board: Category | null;
+  board: any | null;
   handleClose: () => void;
   handleConfirm: (value: string, boardId: string) => void;
 }
