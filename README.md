@@ -18,6 +18,7 @@ Rename __.env.template__ to __.env__ and set the values for environment variable
 
 ## Fill database with test info
 Do a request to
+
 ```
 http://localhost/api/seed
 ```
