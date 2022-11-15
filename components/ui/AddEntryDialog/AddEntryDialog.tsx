@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from "@mui/material"
 // import { Category } from "../../../interfaces";
 
-import styles from './NewEntryDialog.module.css';
+import styles from './AddEntryDialog.module.css';
 
 interface Props {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface Props {
   handleConfirm: (value: string, boardId: string) => void;
 }
 
-export const NewEntryDialog = ({
+export const AddEntryDialog = ({
   isOpen,
   board,
   handleClose,

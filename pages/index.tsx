@@ -5,7 +5,7 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 
 import { Layout } from '../components/layouts'
 import { CardHeader, DeleteEntryDialog, EditEntryDialog, EntryList } from '../components/ui'
-import { NewEntryDialog } from '../components/ui/NewEntryDialog/NewEntryDialog';
+import { AddEntryDialog } from '../components/ui/AddEntryDialog/AddEntryDialog';
 
 import { BoardsContext } from '../context/boards'
 
@@ -149,7 +149,7 @@ const HomePage: NextPage = () => {
 
       {
         activeBoard && (
-          <NewEntryDialog
+          <AddEntryDialog
             isOpen={!!activeBoard}
             handleClose={onCloseAddNewTicker}
             handleConfirm={handleConfirmAddNewTicket}
