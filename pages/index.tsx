@@ -4,7 +4,8 @@ import type { NextPage } from 'next'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 
 import { Layout } from '../components/layouts'
-import { CardHeader, DeleteEntryDialog, EditEntryDialog, EntryList, NewEntryDialog } from '../components/ui'
+import { CardHeader, DeleteEntryDialog, EditEntryDialog, EntryList } from '../components/ui'
+import { NewEntryDialog } from '../components/ui/NewEntryDialog/NewEntryDialog';
 
 import { BoardsContext } from '../context/boards'
 

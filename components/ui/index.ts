@@ -5,7 +5,7 @@ export { Navbar } from "./Navbar/Navbar";
 export { EntryCard } from "./EntryCard/EntryCard";
 export { EntryList } from "./EntryList/EntryList";
 export { NewEntry } from "./NewEntry/NewEntry";
-export { NewEntryDialog } from "./NewEntryDialog/NewEntryDialog";
+// export { NewEntryDialog } from "./NewEntryDialog/NewEntryDialog";
 export { DeleteEntryDialog } from "./DeleteEntryDialog/DeleteEntryDialog";
 export { EditEntryDialog } from "./EditEntryDialog/EditEntryDialog";
 export { NewBoardDialog } from "./NewBoardDialog/NewBoardDialog";
