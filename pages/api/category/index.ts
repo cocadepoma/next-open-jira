@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../../database';
-import { Category, CategoryModel } from '../../../models';
+import { ICategory, CategoryModel } from '../../../models';
 
 type Data =
   | { message: string }
-  | Category
-  | Category[];
+  | ICategory
+  | ICategory[];
 
 export default function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
