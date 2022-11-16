@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "MONGODB_URI=mongodb+srv://open-gira-user:fAbW1pvdHuAoBYou@cluster0.9utrw.mongodb.net next build",
     "start": "next start -p 8085",
     "lint": "next lint"
   },
