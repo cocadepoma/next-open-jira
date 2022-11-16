@@ -28,7 +28,7 @@ export const connect = async () => {
     await disconnect();
   }
 
-  await mongoose.connect('mongodb+srv://open-gira-user:fAbW1pvdHuAoBYou@cluster0.9utrw.mongodb.net/?retryWrites=true&w=majority' || process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI || '');
   mongoConnection.isConnected = 1;
 
   console.log('Connected succesfully to database');

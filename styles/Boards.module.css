@@ -56,11 +56,11 @@
 }
 
 .entrycard__button--edit {
-  color: #072f84;
+  color: #072f84 !important;
 }
 
 .order-boards____button--delete {
-  color: #370404;
+  color: #910101 !important;
 }
 
 @media (min-width: 768px) {

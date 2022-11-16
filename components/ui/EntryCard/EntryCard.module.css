@@ -46,12 +46,12 @@
 }
 
 .entrycard__button--edit {
-  color: #072f84;
+  color: #072f84 !important;
   width: 1rem;
 }
 
 .entrycard__button--delete {
-  color: #910101;
+  color: #910101 !important;
   width: 1rem;
 }
 
