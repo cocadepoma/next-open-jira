@@ -48,33 +48,43 @@ const updateCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 };
 
 const getCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { id } = req.query;
+  try {
+    const { id } = req.query;
 
-  await db.connect();
+    await db.connect();
 
-  const requestedCategory = await CategoryModel.findById(id);
+    const requestedCategory = await CategoryModel.findById(id);
 
-  await db.disconnect();
+    if (!requestedCategory) {
+      return res.status(400).json({ message: `There is not a category with the id: ${id}` });
+    }
 
-  if (!requestedCategory) {
-    return res.status(400).json({ message: `There is not a category with the id: ${id}` });
+    res.status(200).json(requestedCategory);
+  } catch (error) {
+    console.log(error);
+
+    await db.disconnect();
+    return res.status(500).json({ message: 'Something went wrong' });
   }
-
-  res.status(200).json(requestedCategory);
 };
 
 const deleteCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { id } = req.query;
+  try {
+    const { id } = req.query;
 
-  await db.connect();
+    await db.connect();
 
-  const deletedCategory = await CategoryModel.findByIdAndRemove(id);
+    const deletedCategory = await CategoryModel.findByIdAndRemove(id);
 
-  await db.disconnect();
+    if (!deletedCategory) {
+      return res.status(400).json({ message: `There is not a category with the id: ${id}` });
+    };
 
-  if (!deletedCategory) {
-    return res.status(400).json({ message: `There is not a category with the id: ${id}` });
-  };
+    return res.status(200).json(deletedCategory);
+  } catch (error) {
+    console.log(error);
 
-  return res.status(200).json(deletedCategory);
+    await db.disconnect();
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
 };

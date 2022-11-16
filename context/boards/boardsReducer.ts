@@ -30,7 +30,6 @@ export const boardsReducer = (state: BoardsState, action: BoardsActionType): Boa
 
       const sortedBoards = updatedBoards.sort((a, b) => a.indexOrder - b.indexOrder);
 
-      console.log(boardsIds);
       return {
         boards: sortedBoards
       }

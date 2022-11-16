@@ -24,8 +24,6 @@ const getEntries = async (res: NextApiResponse<Data>) => {
   await db.connect();
   const entries = await EntryModel.find().sort({ indexOrder: 'ascending' });
 
-  await db.disconnect();
-
   res.status(200).json(entries);
 };
 
@@ -50,10 +48,10 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     return res.status(201).json({ entry: newEntry });
   } catch (error) {
+    await db.disconnect();
+
     console.log(error);
 
     return res.status(500).json({ message: 'Something went wrong' });
-  } finally {
-    await db.disconnect();
   }
 };

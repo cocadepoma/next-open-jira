@@ -14,7 +14,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   if (!mongoose.isValidObjectId(id)) {
     return res.status(400).json({ message: `The id ${id} is not a valid id` })
   }
-  console.log({ req: req.method })
   switch (req.method) {
     case 'PUT':
       return updateEntry(req, res);
@@ -38,7 +37,6 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const entryToUpdate = await EntryModel.findById(id);
 
   if (!entryToUpdate) {
-    await db.disconnect();
     return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
   }
 
@@ -55,10 +53,10 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     // await entryToUpdate.save();
     res.status(200).json(updatedEntry!);
   } catch (error: any) {
+    await db.disconnect();
+
     console.log({ error });
     res.status(400).json({ message: error.errors.status.message })
-  } finally {
-    await db.disconnect();
   }
 };
 
@@ -69,7 +67,6 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const requestedEntry = await EntryModel.findById(id);
 
-  await db.disconnect();
 
   if (!requestedEntry) {
     return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
@@ -85,7 +82,6 @@ const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const deletedEntry = await EntryModel.findByIdAndRemove(id);
 
-  await db.disconnect();
 
   if (!deletedEntry) {
     return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
