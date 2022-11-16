@@ -21,10 +21,17 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
 }
 
 const getEntries = async (res: NextApiResponse<Data>) => {
-  await db.connect();
-  const entries = await EntryModel.find().sort({ indexOrder: 'ascending' });
+  try {
+    await db.connect();
+    const entries = await EntryModel.find().sort({ indexOrder: 'ascending' });
 
-  res.status(200).json(entries);
+    res.status(200).json(entries);
+  } catch (error) {
+    console.log({ error });
+
+    await db.disconnect();
+    return res.status(500).json({ message: 'Something went wrong' });
+  }
 };
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -48,10 +55,9 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     return res.status(201).json({ entry: newEntry });
   } catch (error) {
+    console.log({ error });
+
     await db.disconnect();
-
-    console.log(error);
-
     return res.status(500).json({ message: 'Something went wrong' });
   }
 };

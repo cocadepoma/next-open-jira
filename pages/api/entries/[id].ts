@@ -61,31 +61,45 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 };
 
 const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  try {
+    const { id } = req.query;
 
-  await db.connect();
+    await db.connect();
 
-  const requestedEntry = await EntryModel.findById(id);
+    const requestedEntry = await EntryModel.findById(id);
 
 
-  if (!requestedEntry) {
-    return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
+    if (!requestedEntry) {
+      return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
+    }
+
+    res.status(200).json(requestedEntry);
+  } catch (error) {
+    console.log({ error });
+
+    await db.disconnect();
+    return res.status(500).json({ message: 'Something went wrong' });
   }
-
-  res.status(200).json(requestedEntry);
 };
 
 const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  try {
+    const { id } = req.query;
 
-  await db.connect();
+    await db.connect();
 
-  const deletedEntry = await EntryModel.findByIdAndRemove(id);
+    const deletedEntry = await EntryModel.findByIdAndRemove(id);
 
 
-  if (!deletedEntry) {
-    return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
+    if (!deletedEntry) {
+      return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
+    }
+
+    res.status(200).json(deletedEntry);
+  } catch (error) {
+    console.log({ error });
+
+    await db.disconnect();
+    return res.status(500).json({ message: 'Something went wrong' });
   }
-
-  res.status(200).json(deletedEntry);
 };

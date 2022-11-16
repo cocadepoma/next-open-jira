@@ -42,6 +42,8 @@ const updateCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 
     return res.status(200).json(updatedCategory!);
   } catch (error: any) {
+    console.log({ error });
+
     await db.disconnect();
     return res.status(400).json({ message: error.errors.status.message })
   }
@@ -61,7 +63,7 @@ const getCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     res.status(200).json(requestedCategory);
   } catch (error) {
-    console.log(error);
+    console.log({ error });
 
     await db.disconnect();
     return res.status(500).json({ message: 'Something went wrong' });
@@ -82,7 +84,7 @@ const deleteCategory = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 
     return res.status(200).json(deletedCategory);
   } catch (error) {
-    console.log(error);
+    console.log({ error });
 
     await db.disconnect();
     return res.status(500).json({ message: 'Something went wrong' });

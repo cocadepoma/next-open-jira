@@ -54,7 +54,6 @@ const BoardsPage: NextPage = () => {
 
   const handleConfirmEditBoard = (board: Category) => {
     updateBoards([board]);
-    console.log(board);
     setActiveEditBoard(null);
   };
 
