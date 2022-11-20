@@ -26,7 +26,8 @@
   font-weight: bold;
   user-select: none;
   margin-right: 2rem;
-  color: rgba(0, 0, 0, 0.7)
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
 }
 
 .entrycard__time {

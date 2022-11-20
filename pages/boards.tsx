@@ -2,6 +2,7 @@ import { useContext, useState } from 'react'
 import type { NextPage } from 'next'
 
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd'
+import { useSnackbar } from 'notistack';
 
 import { Layout } from '../components/layouts'
 import { AddCircleOutlineOutlined, DeleteOutline, Edit } from '@mui/icons-material';
@@ -20,6 +21,8 @@ const BoardsPage: NextPage = () => {
   const [isNewBoardDialogOpen, setIsNewBoardDialogOpen] = useState(false);
   const [activeDeleteBoard, setActiveDeleteBoard] = useState<Category | null>(null);
   const [activeEditBoard, setActiveEditBoard] = useState<Category | null>(null);
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const onDragEndHandler = (result: DropResult) => {
     const { destination, source } = result
@@ -44,8 +47,20 @@ const BoardsPage: NextPage = () => {
   };
 
   const handleAddNewBoard = (name: string) => {
-    addNewBoard(name);
     setIsNewBoardDialogOpen(false);
+
+    if (name.trim().length <= 2) {
+      enqueueSnackbar(`The board name should have at least 3 characters`, {
+        variant: 'error',
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          horizontal: 'right',
+          vertical: 'bottom'
+        }
+      })
+      return;
+    }
+    addNewBoard(name);
   };
 
   const onBoardEdit = (board: Category) => {
@@ -53,8 +68,21 @@ const BoardsPage: NextPage = () => {
   };
 
   const handleConfirmEditBoard = (board: Category) => {
-    updateBoards([board]);
     setActiveEditBoard(null);
+
+    if (board.name.trim().length <= 2) {
+      enqueueSnackbar(`The board name should have at least 3 characters`, {
+        variant: 'error',
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          horizontal: 'right',
+          vertical: 'bottom'
+        }
+      })
+      return;
+    }
+
+    updateBoards([board]);
   };
 
   const onBoardDelete = (board: Category) => {

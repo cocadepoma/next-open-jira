@@ -35,7 +35,7 @@ const getEntries = async (res: NextApiResponse<Data>) => {
 };
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { description = '', categoryId } = req.body;
+  const { description = '', content = '', categoryId } = req.body;
 
   try {
     await db.connect();
@@ -44,6 +44,7 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     if (!category) return res.status(500).json({ message: 'Category does not exist' });
 
     const newEntry = new EntryModel({
+      content,
       description,
       createdAt: Date.now(),
       categoryId: category._id

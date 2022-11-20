@@ -8,6 +8,7 @@ export { NewEntry } from "./NewEntry/NewEntry";
 // export { AddEntryDialog } from "./AddEntryDialog/AddEntryDialog";
 export { DeleteEntryDialog } from "./DeleteEntryDialog/DeleteEntryDialog";
 export { EditEntryDialog } from "./EditEntryDialog/EditEntryDialog";
+export { EmptyBoard } from './EmptyBoard/EmptyBoard';
 export { NewBoardDialog } from "./NewBoardDialog/NewBoardDialog";
 export { DeleteBoardDialog } from "./DeleteBoardDialog/DeleteBoardDialog";
 export { EditBoardDialog } from "./EditBoardDialog/EditBoardDialog";

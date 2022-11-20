@@ -3,6 +3,7 @@ import { FC, useEffect, useReducer } from 'react';
 import { BoardsContext, boardsReducer } from '.';
 import { Category, Entry, EntryResponse } from '../../interfaces';
 import { boardsApi } from '../../apis';
+import { useSnackbar } from 'notistack';
 
 export interface BoardsState {
   boards: Category[];
@@ -18,6 +19,7 @@ const Boards_INITIAL_STATE: BoardsState = {
 
 export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(boardsReducer, Boards_INITIAL_STATE);
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     loadBoards();
@@ -42,11 +44,21 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     }
   };
 
-  const updateEntry = async ({ _id, description, categoryId }: Entry) => {
+  const updateEntry = async ({ _id, description, categoryId, content }: Entry, showSnack = false) => {
     try {
-      const { data } = await boardsApi.put<Entry>(`/entries/${_id}`, { description, categoryId });
+      const { data } = await boardsApi.put<Entry>(`/entries/${_id}`, { description, categoryId, content });
 
       dispatch({ type: '[Boards] - Entry-Updated', payload: data });
+      if (showSnack) {
+        enqueueSnackbar('Ticket updated succesfully', {
+          variant: 'success',
+          autoHideDuration: 2000,
+          anchorOrigin: {
+            horizontal: 'right',
+            vertical: 'bottom'
+          }
+        })
+      }
     } catch (error) {
       console.log({ error });
     }
@@ -57,6 +69,15 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
       const { data } = await boardsApi.post<Category>('/category', { name });
 
       dispatch({ type: '[Boards] - Add Board', payload: data });
+
+      enqueueSnackbar(`Board added succesfully`, {
+        variant: 'success',
+        autoHideDuration: 2000,
+        anchorOrigin: {
+          horizontal: 'right',
+          vertical: 'bottom'
+        }
+      })
     } catch (error) {
       console.log({ error });
     }

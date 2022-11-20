@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 
 import { Layout } from '../components/layouts'
-import { CardHeader, DeleteEntryDialog, EditEntryDialog, EntryList } from '../components/ui'
+import { CardHeader, DeleteEntryDialog, EditEntryDialog, EmptyBoard, EntryList } from '../components/ui'
 import { AddEntryDialog } from '../components/ui/AddEntryDialog/AddEntryDialog';
 
 import { BoardsContext } from '../context/boards'
@@ -33,7 +33,7 @@ const HomePage: NextPage = () => {
     const newEntry = {
       ...boardSource!.tickets[source.index],
       categoryId: destination.droppableId
-    }
+    };
 
     updateEntry(newEntry);
 
@@ -87,7 +87,7 @@ const HomePage: NextPage = () => {
       tickets: updatedTickets
     };
 
-    updateEntry(newTicket);
+    updateEntry(newTicket, true);
     updateBoards([updatedBoard]);
 
     onCloseEditTicket();
@@ -115,37 +115,45 @@ const HomePage: NextPage = () => {
 
   return (
     <Layout title="Home - OpenJira">
-      <DragDropContext onDragEnd={onDragEndHandler}>
-        <div className={styles['home__context']}>
-          {boards.map((board, i) => (
-            <div className={styles['home__board']} key={board._id}>
+      {
+        boards.length === 0
 
-              <CardHeader
-                className={styles['home__header--container']}
-                board={board}
-                onClick={onStartAddNewEntry}
-              />
+          ? <EmptyBoard />
 
-              <Droppable droppableId={board._id}>
-                {
-                  (droppableProvided, droppableSnapshot) => (
-                    <div className={styles['home__list--container']}
-                      ref={droppableProvided.innerRef}
-                      {...droppableProvided.droppableProps}
-                    >
-                      <EntryList
-                        tickets={board.tickets}
-                        setActiveDeleteTicket={onStartDeleteTicket}
-                        setActiveEditTicket={onStartEditTicket}
-                      />
-                      {droppableProvided.placeholder}
-                    </div>
-                  )}
-              </Droppable>
-            </div>
-          ))}
-        </div>
-      </DragDropContext>
+          : (
+            <DragDropContext onDragEnd={onDragEndHandler}>
+              <div className={styles['home__context']}>
+                {boards.map((board, i) => (
+                  <div className={styles['home__board']} key={board._id}>
+
+                    <CardHeader
+                      className={styles['home__header--container']}
+                      board={board}
+                      onClick={onStartAddNewEntry}
+                    />
+
+                    <Droppable droppableId={board._id}>
+                      {
+                        (droppableProvided, droppableSnapshot) => (
+                          <div className={styles['home__list--container']}
+                            ref={droppableProvided.innerRef}
+                            {...droppableProvided.droppableProps}
+                          >
+                            <EntryList
+                              tickets={board.tickets}
+                              setActiveDeleteTicket={onStartDeleteTicket}
+                              setActiveEditTicket={onStartEditTicket}
+                            />
+                            {droppableProvided.placeholder}
+                          </div>
+                        )}
+                    </Droppable>
+                  </div>
+                ))}
+              </div>
+            </DragDropContext>
+          )
+      }
 
       {
         activeBoard && (

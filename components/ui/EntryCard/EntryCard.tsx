@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, MouseEvent } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -10,6 +10,8 @@ import { IconButton } from "@mui/material";
 import { Entry } from "../../../interfaces"
 
 import styles from './EntryCard.module.css'
+import { useRouter } from "next/router";
+import { getTicketTime } from '../../../utils/utils';
 
 interface Props {
   entry: Entry;
@@ -19,34 +21,17 @@ interface Props {
 }
 
 export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setActiveEditTicket }) => {
-  const onDelete = () => {
+  const router = useRouter();
+
+  const onDelete = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     setActiveDeleteTicket(entry)
   };
 
-  const onEdit = () => {
+  const onEdit = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation();
     setActiveEditTicket(entry)
   };
-
-  const getTime = (time: number) => {
-    const currentDate = new Date().getTime();
-    const ticketDate = new Date(time).getTime();
-
-    const diff = ((currentDate - ticketDate) / 1000) / 60;
-
-    if (diff > 518400) {
-      return `${Math.round(diff / 43200)} year/s ago`;
-    } else if (diff > 43200) {
-      return `${Math.round(diff / 43200)} month/s ago`;
-    } else if (diff > 1440) {
-      return `${Math.round(diff / 1440)} day/s ago`;
-    } else if (diff > 60) {
-      return `${Math.round(diff / 60)} hour/s ago`;
-    } else if (Math.abs(Math.round(diff)) >= 1) {
-      return `${Math.abs(Math.round(diff))} minutes ago`;
-    } else {
-      return 'just now';
-    }
-  }
 
   return (
     <Draggable draggableId={entry._id} index={index} key={entry._id}>
@@ -58,7 +43,7 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
             {...draggableProvided.dragHandleProps}
             ref={draggableProvided.innerRef}
           >
-            <div className={styles['entrycard__actions--container']}>
+            <div className={styles['entrycard__actions--container']} onClick={() => router.push(`/tickets/${entry._id}`)}>
               <p className={styles.entrycard__text}>{entry.description}</p>
 
               <div className={styles['entrycard__buttons--container']}>
@@ -83,7 +68,7 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
 
             <p className={styles.entrycard__time}>
               <HourglassTopOutlinedIcon />
-              {getTime(entry.createdAt)}
+              {getTicketTime(entry.createdAt)}
             </p>
           </div>
         )

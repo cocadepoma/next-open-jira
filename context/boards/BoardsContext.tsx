@@ -5,7 +5,7 @@ export interface ContextProps {
   boards: Category[];
 
   addNewEntry: (description: string, boardId: string) => Promise<void>;
-  updateEntry: (entry: Entry) => Promise<void>;
+  updateEntry: (entry: Entry, showSnack?: boolean) => Promise<void>;
   deleteEntry: (entry: Entry) => Promise<void>;
   deleteBoard: (board: Category) => Promise<void>;
   addNewBoard: (name: string) => Promise<void>;

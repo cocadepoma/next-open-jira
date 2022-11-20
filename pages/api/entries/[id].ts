@@ -14,6 +14,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   if (!mongoose.isValidObjectId(id)) {
     return res.status(400).json({ message: `The id ${id} is not a valid id` })
   }
+
   switch (req.method) {
     case 'PUT':
       return updateEntry(req, res);
@@ -43,10 +44,11 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const {
     description = entryToUpdate.description,
     categoryId = entryToUpdate.categoryId,
+    content = entryToUpdate.content || ''
   } = req.body;
 
   try {
-    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, categoryId }, { runValidators: true, new: true });
+    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, categoryId, content }, { runValidators: true, new: true });
 
     // entryToUpdate.description = description;
     // entryToUpdate.status = status;
@@ -68,7 +70,6 @@ const getEntry = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const requestedEntry = await EntryModel.findById(id);
 
-
     if (!requestedEntry) {
       return res.status(400).json({ message: `There is not a entry with the id: ${id}` });
     }
@@ -89,7 +90,6 @@ const deleteEntry = async (req: NextApiRequest, res: NextApiResponse) => {
     await db.connect();
 
     const deletedEntry = await EntryModel.findByIdAndRemove(id);
-
 
     if (!deletedEntry) {
       return res.status(400).json({ message: `There is not a entry with the id: ${id}` });

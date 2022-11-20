@@ -3,6 +3,7 @@ export interface Entry {
   description: string;
   createdAt: number;
   categoryId: string;
+  content?: string;
 }
 
 export interface EntryResponse {
