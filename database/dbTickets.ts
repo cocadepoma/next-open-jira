@@ -10,7 +10,5 @@ export const getTicketById = async (id: string): Promise<IEntry | null> => {
 
   const ticket = await EntryModel.findById(id).lean();
 
-  await db.disconnect();
-
   return JSON.parse(JSON.stringify(ticket));
 };

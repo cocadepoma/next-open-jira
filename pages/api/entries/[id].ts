@@ -45,7 +45,7 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     description = entryToUpdate.description,
     categoryId = entryToUpdate.categoryId,
     content = entryToUpdate.content || '',
-    color = entryToUpdate.color || ''
+    color = entryToUpdate.color || 'rgba(0,0,0,.5)'
   } = req.body;
 
   try {

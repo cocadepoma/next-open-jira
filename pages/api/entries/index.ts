@@ -35,7 +35,7 @@ const getEntries = async (res: NextApiResponse<Data>) => {
 };
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { description = '', content = '', color = '', categoryId } = req.body;
+  const { description = '', content = '', color = 'rgba(0,0,0,.5)', categoryId } = req.body;
 
   try {
     await db.connect();

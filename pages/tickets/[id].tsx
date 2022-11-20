@@ -35,7 +35,7 @@ const EntryView = ({ ticket }: Props) => {
   });
 
   const [selectedBoard, setSelectedBoard] = useState<Category | null>(null);
-  const [color, setColor] = useState<string>(ticket.color || '#ffffff');
+  const [color, setColor] = useState<string>(ticket.color || 'rgba(0,0,0,.5)');
 
   const [activeDeleteTicket, setActiveDeleteTicket] = useState<boolean>(false);
 
