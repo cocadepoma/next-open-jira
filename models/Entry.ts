@@ -7,7 +7,8 @@ export const entrySchema = new Schema({
   description: { type: String, },
   createdAt: { type: Number },
   categoryId: { type: String },
-  content: { type: String }
+  content: { type: String },
+  color: { type: String },
 });
 
 const EntryModel: Model<IEntry> = mongoose.models.Entry || mongoose.model('Entry', entrySchema);

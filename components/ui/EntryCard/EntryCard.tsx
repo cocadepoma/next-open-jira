@@ -1,6 +1,7 @@
 import { FC, MouseEvent } from "react";
 import { Draggable } from "react-beautiful-dnd";
 
+import LabelTwoToneIcon from '@mui/icons-material/LabelTwoTone';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import HourglassTopOutlinedIcon from '@mui/icons-material/HourglassTopOutlined';
@@ -44,7 +45,8 @@ export const EntryCard: FC<Props> = ({ entry, index, setActiveDeleteTicket, setA
             ref={draggableProvided.innerRef}
           >
             <div className={styles['entrycard__actions--container']} onClick={() => router.push(`/tickets/${entry._id}`)}>
-              <p className={styles.entrycard__text}>{entry.description}</p>
+
+              <p className={styles.entrycard__text}><LabelTwoToneIcon style={{ color: entry.color || 'rgba(0,0,0,.5)' }} fontSize="small" /> {entry.description}</p>
 
               <div className={styles['entrycard__buttons--container']}>
                 <IconButton

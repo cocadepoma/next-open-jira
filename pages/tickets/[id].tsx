@@ -2,7 +2,9 @@ import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from 'next'
 
-import { Button, Card, CardActions, CardContent, CardHeader, FormControl, Grid, Autocomplete, TextField } from "@mui/material"
+import { ColorResult, GithubPicker } from 'react-color';
+
+import { Button, Card, CardActions, CardContent, CardHeader, FormControl, Grid, Autocomplete, TextField, Typography } from "@mui/material"
 import DeleteOutline from "@mui/icons-material/DeleteOutline";
 import { Box } from "@mui/system";
 import { SaveOutlined } from "@mui/icons-material";
@@ -26,13 +28,15 @@ const EntryView = ({ ticket }: Props) => {
 
   const { boards, updateBoards, deleteEntry, updateEntry } = useContext(BoardsContext);
 
+  const [isTouched, setIsTouched] = useState(false);
   const [form, setForm] = useState({
     description: ticket.description,
     content: ticket.content || '',
   });
 
-  const [isTouched, setIsTouched] = useState(false);
   const [selectedBoard, setSelectedBoard] = useState<Category | null>(null);
+  const [color, setColor] = useState<string>(ticket.color || '#ffffff');
+
   const [activeDeleteTicket, setActiveDeleteTicket] = useState<boolean>(false);
 
   const isNotValid = useMemo(() => form.description.length <= 0 && isTouched, [isTouched, form]);
@@ -40,7 +44,7 @@ const EntryView = ({ ticket }: Props) => {
   useEffect(() => {
     if (!boards.length) return;
 
-    setSelectedBoard(boards.find(board => board._id === ticket.categoryId)!)
+    setSelectedBoard(boards.find(board => board._id === ticket.categoryId)!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boards])
 
@@ -67,7 +71,8 @@ const EntryView = ({ ticket }: Props) => {
       ...ticket,
       content: form.content,
       description: form.description,
-      categoryId: selectedBoard._id
+      categoryId: selectedBoard._id,
+      color
     };
 
     const boardsToUpdate = [];
@@ -129,6 +134,10 @@ const EntryView = ({ ticket }: Props) => {
 
     onCloseDeleteTicket();
     router.push('/');
+  };
+
+  const onColorChange = (e: ColorResult) => {
+    setColor(e.hex);
   };
 
   return (
@@ -194,6 +203,18 @@ const EntryView = ({ ticket }: Props) => {
                 onChange={onFieldChange}
                 value={form.content}
               />
+
+              <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '1rem' }}>
+                Ticket Color:
+                <span style={{
+                  boxShadow: '1px 1px 2px -1px rgba(0,0,0,0.6)',
+                  backgroundColor: color,
+                  height: '1.5rem',
+                  width: '1.5rem',
+                  display: 'inline-block',
+                }} />
+              </Typography>
+              <GithubPicker color={color} onChangeComplete={onColorChange} />
             </CardContent>
 
             <CardActions sx={{ display: 'flex', justifyContent: 'space-between', padding: 2 }}>

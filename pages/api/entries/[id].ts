@@ -44,11 +44,12 @@ const updateEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   const {
     description = entryToUpdate.description,
     categoryId = entryToUpdate.categoryId,
-    content = entryToUpdate.content || ''
+    content = entryToUpdate.content || '',
+    color = entryToUpdate.color || ''
   } = req.body;
 
   try {
-    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, categoryId, content }, { runValidators: true, new: true });
+    const updatedEntry = await EntryModel.findByIdAndUpdate(id, { description, categoryId, content, color }, { runValidators: true, new: true });
 
     // entryToUpdate.description = description;
     // entryToUpdate.status = status;

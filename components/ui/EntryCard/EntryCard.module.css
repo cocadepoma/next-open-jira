@@ -2,7 +2,7 @@
   background-color: rgb(255, 255, 255);
   border-radius: 5px;
   box-shadow: 1px 1px 6px -1px #000000b0;
-  padding: 0.5rem 1rem 0.5rem 0.5rem;
+  padding: 0.1rem 1rem 0.5rem 0.5rem;
   margin-bottom: 0.5rem;
   position: relative;
 }
@@ -17,8 +17,8 @@
   justify-content: space-between;
   width: 2.5rem;
   position: absolute;
-  top: 0;
-  right: 0.5rem;
+  top: 0.2rem;
+  right: 0.7rem;
 }
 
 .entrycard__text {
@@ -28,6 +28,10 @@
   margin-right: 2rem;
   color: rgba(0, 0, 0, 0.7);
   cursor: pointer;
+}
+
+.entrycard__text svg {
+  transform: translate(0px, 5px);
 }
 
 .entrycard__time {
@@ -48,12 +52,14 @@
 
 .entrycard__button--edit {
   color: #072f84 !important;
-  width: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .entrycard__button--delete {
   color: #910101 !important;
-  width: 1rem;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 @media (min-width: 768px) {

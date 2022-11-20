@@ -35,7 +35,7 @@ const getEntries = async (res: NextApiResponse<Data>) => {
 };
 
 const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const { description = '', content = '', categoryId } = req.body;
+  const { description = '', content = '', color = '', categoryId } = req.body;
 
   try {
     await db.connect();
@@ -45,6 +45,7 @@ const postEntry = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
     const newEntry = new EntryModel({
       content,
+      color,
       description,
       createdAt: Date.now(),
       categoryId: category._id

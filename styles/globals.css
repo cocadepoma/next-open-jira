@@ -556,3 +556,14 @@ p {
 h3 {
   font-size: 1.4rem;
 }
+
+div.github-picker {
+  width: 100% !important;
+  justify-content: space-between;
+}
+
+div.github-picker>div:nth-child(1),
+div.github-picker>div:nth-child(2) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

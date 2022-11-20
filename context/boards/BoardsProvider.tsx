@@ -44,9 +44,9 @@ export const BoardsProvider: FC<BoardsProviderProps> = ({ children }) => {
     }
   };
 
-  const updateEntry = async ({ _id, description, categoryId, content }: Entry, showSnack = false) => {
+  const updateEntry = async ({ _id, description, categoryId, content, color }: Entry, showSnack = false) => {
     try {
-      const { data } = await boardsApi.put<Entry>(`/entries/${_id}`, { description, categoryId, content });
+      const { data } = await boardsApi.put<Entry>(`/entries/${_id}`, { description, categoryId, content, color });
 
       dispatch({ type: '[Boards] - Entry-Updated', payload: data });
       if (showSnack) {

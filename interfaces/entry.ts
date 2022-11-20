@@ -4,6 +4,7 @@ export interface Entry {
   createdAt: number;
   categoryId: string;
   content?: string;
+  color?: string;
 }
 
 export interface EntryResponse {
